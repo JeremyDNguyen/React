@@ -1,12 +1,33 @@
+import { arrayExpression } from "@babel/types";
 import React, { Component } from "react";
 import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle } from 'reactstrap';
 
 class CampsiteInfo extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            campsite: this.props.campsite,
-        };
+    }
+
+    renderComments (comments) {
+        if (comments) {
+            return (
+                <div className = "col-md-5 m-1">
+                    <h4>Comments</h4>
+                    {comments.map(comment => {
+                        return (
+                            <div>
+                                    <p>{comment.text} </p>
+                                    <span>--{comment.author}, </span>
+                                    <p>{new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(comment.date)))}</p>
+                            </div>
+                        )})}
+                </div>
+            )
+        }
+            return (
+                <div>
+
+                </div>
+            )
     }
 
     renderCampsite (campsite) {
@@ -24,10 +45,11 @@ class CampsiteInfo extends React.Component {
     }
     
     render () {
-        if (this.state.campsite) {
+        if (this.props.campsite) {
             return (
                 <div className = "row">
-                    {this.renderCampsite(this.state.campsite)} 
+                    {this.renderCampsite(this.props.campsite)}
+                    {this.renderComments(this.props.campsite.comments)}
                 </div>
             )
         } else {
